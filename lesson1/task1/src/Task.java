@@ -1,6 +1,6 @@
 public class Task {
     static final int integer1 = 4205674;
-    static final int integer2 = -948; // Should have the very top bit activated due to how signed integers work in CPUs, but apparently Java is really weird and doesn't do this????
+    static final int integer2 = -948; // Should have the very top bit activated due to how signed integers work in CPUs.
     static final int integer3 = 20030459;
     static final int integer4 = 0b00100110101010010001011111110000; // Turning this into binary SHOULD be 1:1 with how this was input after 0b.
 
@@ -54,7 +54,7 @@ public class Task {
         String loadInto = "";
         for (int i = 31; i >= 0; i--) { // Needs to go reverse, since binary is right-to-left.
             int loadWith = 1 << i; // A number with one bit on, shifted up to the position of the bit to check it based on the 'index', because it will be very useful for checking if the bit that's in 'decimal' is on.
-            if ((loadWith & decimal) > 0) // AND operation, this is to check if the bit at the position of the bit in loadWith is on at all: if bit is on, it will stay activated while the rest deactivate. But if the bit is off at the position of the only activated bit in loadWith, then all bits are off and the if statement gets '0'.
+            if ((loadWith & decimal) != 0) // AND operation, this is to check if the bit at the position of the bit in loadWith is on at all: if bit is on, it will stay activated while the rest deactivate. But if the bit is off at the position of the only activated bit in loadWith, then all bits are off and the if statement gets '0'.
                 loadInto += '1';
             else
                 loadInto += '0';
