@@ -4,9 +4,7 @@
     <output-test url="file://$MODULE_DIR$/../../../../lesson1/task1/out/test/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../../lesson1/task1/src/test" />
-    <content url="file://$MODULE_DIR$/../../../../lesson1/task1/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../../../lesson1/task1/test" isTestSource="true" />
-    </content>
+    <content url="file://$MODULE_DIR$/../../../../lesson1/task1/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="CSE_3310_Mastery_Project_The_Quick_sort.lesson1-task1.main" />
