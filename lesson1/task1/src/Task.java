@@ -29,25 +29,24 @@ public class Task {
 
     public static int binToDec(String binary) { // String should contain under or equal to 32 characters in order ensure the bits fit.
         int strlen = binary.length();
-        if (strlen > 32) { // String NEEDS to have UNDER 32 characters, else it will never represent or fit the bits in the 'int' type.
-            System.out.println("INVALID!!!");
-            return -1;
+        if (strlen == 0) {
+            return 0;
         }
-        int maxIdx = strlen-1;
-        int loadInto = 0; // This is going to be the thing to load bits into.
-        for (int i = 0; i < strlen; i++) {
-            int loadWith = 1 << i; // A number with one bit on, shifted up to the position of the bit to turn on based on the index of character that is going to be checked, because the String is supposed to represent binary.
-            char bit = binary.charAt(maxIdx - i); // Needs (maxIdx - i) because binary goes from right-to-left, Strings don't.
-            https://stackoverflow.com/questions/6906001/how-do-i-use-a-char-as-the-case-in-a-switch-case (It was strangely simple, but I haven't used C in a while)
-            switch (bit) {
-                case '0': break;
-                case '1': loadInto |= loadWith; break; // The OR operation compares the bits between the two and has the bit be 1 if either of the bits at the same position are on, and if bit is 0 for both in one position then it will be 0; the reason why this line is here is to activate the bit in the integer.
-                default:
-                    System.out.println("INVALID!!!");
-                    return -1;
-            }
+
+        int less = strlen-1;
+
+        char bit = binary.charAt(less);
+
+        int scroll = 1 << (31 - less);
+        int resultive = 0;
+        switch (bit) {
+            case '0': break;
+            case '1': resultive |= scroll; break; // The OR operation compares the bits between the two and has the bit be 1 if either of the bits at the same position are on, and if bit is 0 for both in one position then it will be 0; the reason why this line is here is to activate the bit in the integer.
+            default:
+                System.out.println("INVALID!!!");
+                throw new RuntimeException("Bits are only supposed to be 0 and 1!");
         }
-        return loadInto;
+        return resultive | binToDec(binary.substring(0, less));
     }
 
     public static String decToBin(int decimal) { // An int is always 32-bit, function will always work as the integer cannot be anything else.
