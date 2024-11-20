@@ -18,10 +18,14 @@ public class Task {
         System.out.println(binToDec(stringer2));
 
         System.out.println(integer3);
-        System.out.println(decToBin(integer3));
+        String stringer3 = decToBin(integer3);
+        System.out.println(stringer3);
+        System.out.println(binToDec(stringer3));
 
         System.out.println(integer4);
-        System.out.println(decToBin(integer4));
+        String stringer4 = decToBin(integer4);
+        System.out.println(stringer4);
+        System.out.println(binToDec(stringer4));
 
         System.out.println(string1);
         System.out.println(binToDec(string1));
@@ -32,12 +36,21 @@ public class Task {
         if (strlen == 0) {
             return 0;
         }
+        if (strlen > 32) { // Function only returns integer, letting binary go above 32 in length will NOT do anything useful... just shift number until it turns to 0.
+            int goTo = strlen - 32;
+            for (int i = 0; i < goTo; i++) {
+                if (binary.charAt(i) == '1') { // Just because the conversions I have with the decToBin function adds an extra bit... It also shifts into nothing anyway.
+                    System.out.println("INVALID!!!");
+                    throw new RuntimeException("Function only returns int, which is 32 bit maximum!");
+                }
+            }
+        }
 
         int less = strlen-1;
 
-        char bit = binary.charAt(less);
+        char bit = binary.charAt(0); // Highest bit.
 
-        int scroll = 1 << (31 - less);
+        int scroll = 1 << less; // Will shift up to the highest bit in the String in order to have compatibility for all binaries under 32 bit (subtracted by "less" in order for it not to shift with more than necessary, length 1 will never mean bit 2 with CPUs).
         int resultive = 0;
         switch (bit) {
             case '0': break;
@@ -46,18 +59,19 @@ public class Task {
                 System.out.println("INVALID!!!");
                 throw new RuntimeException("Bits are only supposed to be 0 and 1!");
         }
-        return resultive | binToDec(binary.substring(0, less));
+        return resultive | binToDec(binary.substring(1));
     }
 
     public static String decToBin(int decimal) { // An int is always 32-bit, function will always work as the integer cannot be anything else.
-        String loadInto = "";
-        for (int i = 31; i >= 0; i--) { // Needs to go reverse, since binary is right-to-left.
-            int loadWith = 1 << i; // A number with one bit on, shifted up to the position of the bit to check it based on the 'index', because it will be very useful for checking if the bit that's in 'decimal' is on.
-            if ((loadWith & decimal) != 0) // AND operation, this is to check if the bit at the position of the bit in loadWith is on at all: if bit is on, it will stay activated while the rest deactivate. But if the bit is off at the position of the only activated bit in loadWith, then all bits are off and the if statement gets '0'.
-                loadInto += '1';
-            else
-                loadInto += '0';
-        }
-        return loadInto;
+        String loadInto;
+        if (decimal == 0)
+            return "0"; // Ending bit, may be a bit extra BUT it will make the binary technically correct nonetheless.
+        int bitOn = decimal & 1; // Shut off any bits other than the rightmost one, because starting from leftmost will end up in inconsistencies if rightmost bit isn't on; going from rightmost means higher bits are left alone until climbed up to, building the String up properly.
+        if (bitOn != 0)
+            loadInto = "1";
+        else
+            loadInto = "0";
+
+        return decToBin(decimal >>> 1) + loadInto; // Shift to go to the next 'higher' bit.
     }
 }
